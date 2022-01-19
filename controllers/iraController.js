@@ -23,6 +23,14 @@ const deleteIra = async (req, res) => {
     res.status(200).send(`IRA with id: ${id} is deleted`);
 }
 
+const updateIraTotal = async (req, res) => {
+    let id = req.params.id;
+    let total = req.body.total;
+
+    await IRAs.update({currentAmount: total},{where :{id: id}});
+    res.status(200).send(`IRA with id: ${id} updated account total: ${total}`);
+}
+
 //common methods
 const getAllIras = async (req, res) => {
     let iras = await IRAs.findAll({});
@@ -54,5 +62,6 @@ module.exports = {
     getOneIra,
     deleteIra,
     getIraFull,
-    getAllIrasFull
+    getAllIrasFull,
+    updateIraTotal
 }

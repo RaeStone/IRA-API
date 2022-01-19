@@ -1,5 +1,3 @@
-const databaseConfig = require('../databaseConfig');
-
 const { Sequelize, DataTypes } = require('sequelize');
 
 // construct the sequelize object using the constructor
@@ -16,6 +14,7 @@ let sequelize = null;
             }
         );
     } else {
+        const databaseConfig = require('../databaseConfig');
        sequelize = new Sequelize(
         { // use imported configurations from dbConfig
             database: databaseConfig.DB,
