@@ -6,11 +6,11 @@ router.post('/', iraController.addIra);
 
 router.get('/', iraController.getAllIras);
 
-router.get('/:id', iraController.getOneIra);
-
-// router.get('/full', iraController.getAllIrasFull);
+router.get('/full', iraController.getAllIrasFull);
 
 router.get('/full/:id', iraController.getIraFull);
+
+router.get('/:id', iraController.getOneIra);
 
 router.delete('/:id', iraController.deleteIra);
 

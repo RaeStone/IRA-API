@@ -36,9 +36,17 @@ const getOneInvestment = async (req, res) => {
     res.status(200).send(investment);
 }
 
+const getInvestmentByIra = async (req, res) => {
+    let iraId = req.params.id;
+
+    let investments = await Investments.findAll({where: {iraId : iraId}});
+    res.status(200).send(investments);
+}
+
 module.exports = {
     addInvestment,
     deleteInvestment,
     getOneInvestment,
-    getAllInvestments
+    getAllInvestments,
+    getInvestmentByIra
 }

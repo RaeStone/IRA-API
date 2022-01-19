@@ -6,8 +6,11 @@ router.post('/', investmentController.addInvestment);
 
 router.get('/', investmentController.getAllInvestments);
 
+router.get('/ira/:id', investmentController.getInvestmentByIra);
+
 router.get('/:id', investmentController.getOneInvestment);
 
 router.delete('/:id', investmentController.deleteInvestment);
+
 
 module.exports = router;

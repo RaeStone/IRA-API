@@ -31,13 +31,21 @@ const getAllTransactions = async (req, res) => {
 const getOneTransaction = async (req, res) => {
     let id = req.params.id;
 
-    let transactions = await Transactions.findOne({where: {id : id}});
+    let transaction = await Transactions.findOne({where: {id : id}});
     res.status(200).send(transaction);
+}
+
+const getTransactionByIra = async (req, res) => {
+    let iraId = req.params.id;
+
+    let transactions = await Transactions.findAll({where: {iraId : iraId}});
+    res.status(200).send(transactions);
 }
 
 module.exports = {
     addTransaction,
     getAllTransactions,
     getOneTransaction,
-    deleteTransaction
+    deleteTransaction,
+    getTransactionByIra
 }

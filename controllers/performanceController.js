@@ -34,9 +34,17 @@ const getOnePerformance = async (req, res) => {
     res.status(200).send(performance);
 }
 
+const getPerformanceByIra = async (req, res) => {
+    let iraId = req.params.id;
+
+    let performances = await Performances.findAll({where: {iraId : iraId}});
+    res.status(200).send(performances);
+}
+
 module.exports = {
     addPerformance,
     getAllPerformances,
     getOnePerformance,
-    deletePerformance
+    deletePerformance,
+    getPerformanceByIra
 }
