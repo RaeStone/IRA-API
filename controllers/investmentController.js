@@ -1,3 +1,4 @@
+const requestify = require('requestify');
 const db = require('../models/index');
 
 const Investments = db.Investments;
@@ -44,12 +45,20 @@ const getAllInvestments = async (req, res) => {
     }
 }
 
-const getOneInvestment = async (req, res) => {
+const getOneInvestment = async (req, res, next) => {
     try {
         let id = req.params.id;
-    
-        let investment = await Investments.findOne({where: {id : id}});
-        res.status(200).send(investment);
+        let investment = await Investments.findOne({where: {id : id}})
+        let code = investment.name;
+        requestify.get('https://boiling-falls-79972.herokuapp.com/current/' + code)
+        .then ( (response) => {
+            //console.log(response);
+            let stock = response.getBody();
+            console.log("stock: ", stock);
+            investment.currentValue = stock.stock_value;
+            console.log("investment: ", investment);
+            res.status(200).send(investment);  
+        })
     }
     catch(error){
         res.status(400).send(error);
