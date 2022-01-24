@@ -94,7 +94,7 @@ const getIraFull = async (req, res) => {
             inv.dataValues.currentValue = prices[i];
             i++;
         })
-        res.status(200).send(investments);
+        res.status(200).send(ira);
     })
     }
     catch(error) {
@@ -134,6 +134,7 @@ const getAllIrasFull = async (req, res) => {
                     j++;
                 })
             }
+            console.log(iras);
             res.status(200).send(iras);
         })
     }
