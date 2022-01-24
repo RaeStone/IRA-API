@@ -38,7 +38,25 @@ const deleteInvestment = async (req, res) => {
 const getAllInvestments = async (req, res) => {
     try {
         let investments = await Investments.findAll({});
-        res.status(200).send(investments);
+        let code = "";
+        investments.forEach((inv) => {
+            code = code + inv.name + ",";
+        });
+        code = code.substring(0, code.length -1);
+        requestify.get('https://boiling-falls-79972.herokuapp.com/current/' + code)
+        .then((response) => {
+            let stocks = response.getBody();
+            let prices = [];
+            stocks.stocks.forEach((stock) => {
+                prices.push(stock.stock_value);
+            })
+            let i = 0;
+            investments.forEach((inv) => {
+                inv.dataValues.currentValue = prices[i];
+                i++
+            })
+            res.status(200).send(investments);
+        })
     }
     catch(error){
         res.stauts(400).send(error);
@@ -52,12 +70,9 @@ const getOneInvestment = async (req, res, next) => {
         let code = investment.name;
         requestify.get('https://boiling-falls-79972.herokuapp.com/current/' + code)
         .then ( (response) => {
-            //console.log(response);
             let stock = response.getBody();
-            console.log("stock: ", stock);
-            investment.currentValue = stock.stock_value;
-            console.log("investment: ", investment);
-            res.status(200).send(investment);  
+            investment.dataValues.currentValue = stock.stock_value;
+            res.status(200).send(investment);
         })
     }
     catch(error){
