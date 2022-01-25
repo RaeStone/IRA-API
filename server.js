@@ -10,7 +10,7 @@ const investmentRouter = require('./routes/investmentRouter.js');
 const transactionRouter = require('./routes/transactionRouter.js');
 const performanceRouter = require('./routes/performanceRouter.js');
 
-app.use(cors);
+app.use(cors());
 app.use('/iras', routers);
 app.use('/investments', investmentRouter);
 app.use('/transactions', transactionRouter);
