@@ -1,5 +1,5 @@
 const express = require('express');
-
+const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -10,6 +10,7 @@ const investmentRouter = require('./routes/investmentRouter.js');
 const transactionRouter = require('./routes/transactionRouter.js');
 const performanceRouter = require('./routes/performanceRouter.js');
 
+app.use(cors);
 app.use('/iras', routers);
 app.use('/investments', investmentRouter);
 app.use('/transactions', transactionRouter);
