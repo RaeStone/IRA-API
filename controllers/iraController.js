@@ -59,9 +59,9 @@ const getAllIras = async (req, res) => {
 
 const getOneIra = async (req, res) => {
     try{
-        let id = req.params.id;
+        let userId = req.params.id;
     
-        let ira = await IRAs.findOne({where: {id : id}});
+        let ira = await IRAs.findOne({where: {userId : userId}});
         res.status(200).send(ira);
     }
     catch(error){
@@ -72,8 +72,8 @@ const getOneIra = async (req, res) => {
 const getIraFull = async (req, res) => {
     //have to call stock api and append to investment objects
     try {
-        let id = req.params.id;
-        let ira = await IRAs.findOne({where: {id : id}, include: { all: true, nested: true}});
+        let userId = req.params.id;
+        let ira = await IRAs.findOne({where: {userId : userId}, include: { all: true, nested: true}});
         let codes = "";
         let investments = ira.dataValues.investments;
         let len = 1;
