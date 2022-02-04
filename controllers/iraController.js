@@ -62,7 +62,12 @@ const getOneIra = async (req, res) => {
         let userId = req.params.id;
     
         let ira = await IRAs.findOne({where: {userId : userId}});
-        res.status(200).send(ira);
+        if (ira){
+            res.status(200).send(ira);
+        }
+        else {
+            res.status(200).send({});
+        }
     }
     catch(error){
         res.status(400).send(error);
@@ -74,28 +79,33 @@ const getIraFull = async (req, res) => {
     try {
         let userId = req.params.id;
         let ira = await IRAs.findOne({where: {userId : userId}, include: { all: true, nested: true}});
-        let codes = "";
-        let investments = ira.dataValues.investments;
-        let len = 1;
-        for (const investment of investments){
-            codes = codes + investment.dataValues.name + ",";
-            len++;
+        if (ira){
+            let codes = "";
+            let investments = ira.dataValues.investments;
+            let len = 1;
+            for (const investment of investments){
+                codes = codes + investment.dataValues.name + ",";
+                len++;
+            }
+            codes = codes.substring(0, codes.length -1);
+            requestify.get('https://boiling-falls-79972.herokuapp.com/current/' + codes)
+            .then((response) => {
+            let stocks = response.getBody();
+            let prices = [];
+            stocks.stocks.forEach((stock) => {
+                prices.push(stock.stock_value);
+            })
+            let i = 0;
+            investments.forEach((inv) => {
+                inv.dataValues.currentValue = prices[i];
+                i++;
+            })
+            res.status(200).send(ira);
+        })
         }
-        codes = codes.substring(0, codes.length -1);
-        requestify.get('https://boiling-falls-79972.herokuapp.com/current/' + codes)
-        .then((response) => {
-        let stocks = response.getBody();
-        let prices = [];
-        stocks.stocks.forEach((stock) => {
-            prices.push(stock.stock_value);
-        })
-        let i = 0;
-        investments.forEach((inv) => {
-            inv.dataValues.currentValue = prices[i];
-            i++;
-        })
-        res.status(200).send(ira);
-    })
+        else {
+            res.status(200).send({});
+        }
     }
     catch(error) {
         res.status(400).send(error);
