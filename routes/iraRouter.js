@@ -1,19 +1,20 @@
 const iraController = require ('../controllers/iraController');
+const authController = require ('../controllers/authController');
 
 const router = require('express').Router();
 
 router.post('/', iraController.addIra);
 
-router.put('/:id', iraController.updateIraTotal);
+router.put('/:id', authController.checkUser, iraController.updateIraTotal);
 
 router.get('/', iraController.getAllIras);
 
 router.get('/full', iraController.getAllIrasFull);
 
-router.get('/full/:id', iraController.getIraFull);
+router.get('/full/:id', authController.checkUser, iraController.getIraFull);
 
-router.get('/:id', iraController.getOneIra);
+router.get('/:id', authController.checkUser, iraController.getOneIra);
 
-router.delete('/:id', iraController.deleteIra);
+router.delete('/:id', authController.checkUser, iraController.deleteIra);
 
 module.exports = router;

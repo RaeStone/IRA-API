@@ -23,7 +23,7 @@ const addIra = async (req, res) => {
 
 const deleteIra = async (req, res) => {
     try {
-        let id = req.params.id;
+        let id = req.body.id;
     
         await IRAs.destroy({where :{id: id}});
         res.status(200).send(`IRA with id: ${id} is deleted`);
@@ -35,7 +35,7 @@ const deleteIra = async (req, res) => {
 
 const updateIraTotal = async (req, res) => {
     try {
-        let id = req.params.id;
+        let id = req.body.id;
         let total = req.body.total;
     
         await IRAs.update({currentAmount: total},{where :{id: id}});
@@ -59,7 +59,8 @@ const getAllIras = async (req, res) => {
 
 const getOneIra = async (req, res) => {
     try{
-        let userId = req.params.id;
+        let userId = req.body.id;
+        console.log("userId:", userId);
     
         let ira = await IRAs.findOne({where: {userId : userId}});
         if (ira){
@@ -77,7 +78,7 @@ const getOneIra = async (req, res) => {
 const getIraFull = async (req, res) => {
     //have to call stock api and append to investment objects
     try {
-        let userId = req.params.id;
+        let userId = req.body.id;
         let ira = await IRAs.findOne({where: {userId : userId}, include: { all: true, nested: true}});
         if (ira){
             let codes = "";
