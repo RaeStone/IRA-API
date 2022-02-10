@@ -15,7 +15,7 @@ router.get('/secret/:id', iraController.getFull);
 
 router.get('/full', iraController.getAllIrasFull);
 
-router.get('/full/:id', iraController.getIraFull);
+router.get('/full/:id', authController.checkUser, iraController.getIraFull);
 
 router.get('/:id', authController.checkUser, iraController.getOneIra);
 
