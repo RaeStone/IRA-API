@@ -9,6 +9,8 @@ router.put('/:id', authController.checkUser, iraController.updateIraTotal);
 
 router.get('/', iraController.getAllIras);
 
+router.get('/secret/:id', iraController.getFull);
+
 router.get('/full', iraController.getAllIrasFull);
 
 router.get('/full/:id', authController.checkUser, iraController.getIraFull);
