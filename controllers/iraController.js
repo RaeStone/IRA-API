@@ -203,7 +203,7 @@ const getAllIrasFull = async (req, res) => {
                     j++;
                 })
             }
-            console.log(iras);
+            //console.log(iras);
             res.status(200).send(iras);
         })
     }
