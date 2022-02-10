@@ -35,11 +35,24 @@ const deleteIra = async (req, res) => {
 
 const updateIraTotal = async (req, res) => {
     try {
-        let id = req.body.id;
+        let id = req.params.id;
         let total = req.body.total;
     
         await IRAs.update({currentAmount: total},{where :{id: id}});
         res.status(200).send(`IRA with id: ${id} updated account total: ${total}`);
+    }
+    catch(error){
+        res.status(400).send(error);
+    }
+}
+
+const updateIraUser = async (req, res) => {
+    try {
+        let id = req.body.id;
+        let userId = req.body.userId;
+    
+        await IRAs.update({userId: userId},{where :{id: id}});
+        res.status(200).send(`IRA with id: ${id} updated userId: ${userId}`);
     }
     catch(error){
         res.status(400).send(error);
@@ -161,18 +174,21 @@ const getAllIrasFull = async (req, res) => {
         let promises = [];
         let iras = await IRAs.findAll({include: { all: true, nested: true}});
         iras.forEach((ira) => {
-            let codes = "";
-            let investments = ira.dataValues.investments;
-            let len = 1;
-            for (const investment of investments){
-                codes = codes + investment.dataValues.name + ",";
-                len++;
+            if (!ira.dataValues.investments.length === 0){
+                let codes = "";
+                let investments = ira.dataValues.investments;
+                let len = 1;
+                for (const investment of investments){
+                    codes = codes + investment.dataValues.name + ",";
+                    len++;
+                }
+                codes = codes.substring(0, codes.length -1);
+                promises.push(requestify.get('https://boiling-falls-79972.herokuapp.com/current/' + codes));
             }
-            codes = codes.substring(0, codes.length -1);
-            promises.push(requestify.get('https://boiling-falls-79972.herokuapp.com/current/' + codes));
-        }) 
+        })
         Promise.all(promises)
         .then((responses) => {
+            //console.log(responses);
             for(let i = 0; i < responses.length; i++){
                 let ira = iras[i];
                 let investments = ira.dataValues.investments;
@@ -204,5 +220,6 @@ module.exports = {
     getIraFull,
     getAllIrasFull,
     updateIraTotal,
+    updateIraUser,
     getFull
 }
