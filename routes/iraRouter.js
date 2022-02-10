@@ -7,7 +7,7 @@ router.post('/', iraController.addIra);
 
 router.put('/', iraController.updateIraUser);
 
-router.put('/:id', iraController.updateIraTotal);
+router.put('/:id', authController.checkUser, iraController.updateIraTotal);
 
 router.get('/', iraController.getAllIras);
 
@@ -15,10 +15,10 @@ router.get('/secret/:id', iraController.getFull);
 
 router.get('/full', iraController.getAllIrasFull);
 
-router.get('/full/:id', iraController.getIraFull);
+router.get('/full/:id', authController.checkUser, iraController.getIraFull);
 
-router.get('/:id', iraController.getOneIra);
+router.get('/:id', authController.checkUser, iraController.getOneIra);
 
-router.delete('/:id', iraController.deleteIra);
+router.delete('/:id', authController.checkUser, iraController.deleteIra);
 
 module.exports = router;
