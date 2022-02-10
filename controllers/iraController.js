@@ -103,8 +103,10 @@ const getIraFull = async (req, res) => {
                     len++;
                 }
                 codes = codes.substring(0, codes.length -1);
+                console.log(codes);
                 requestify.get('https://boiling-falls-79972.herokuapp.com/current/' + codes)
                 .then((response) => {
+                    //console.log(response);
                 let stocks = response.getBody();
                 let prices = [];
                 stocks.stocks.forEach((stock) => {
@@ -115,9 +117,21 @@ const getIraFull = async (req, res) => {
                     inv.dataValues.currentValue = prices[i];
                     i++;
                 })
+                res.status(200).send(ira);
+                //console.log("edited investment object: ", investments);
             })
         }
-        res.status(200).send(ira);
+        /* let newIra = {
+            id: ira.dataValues.id,
+            investments: investments,
+            transactions: ira.dataValues.transactions,
+            performances: ira.dataValues.performances
+        } */
+        //console.log("now, lower: ", investments);
+        //ira.investments = investments;
+        //console.log("ira object investment object: ", ira.dataValues.investments);
+        //console.log(ira.investments);
+        
     }
         else {
             res.status(200).send({});
