@@ -169,9 +169,9 @@ const getFull = async (req, res) => {
                     inv.dataValues.currentValue = prices[i];
                     i++;
                 })
+                res.status(200).send(ira);
             })
         }
-        res.status(200).send(ira);
     }
         else {
             res.status(200).send({});
